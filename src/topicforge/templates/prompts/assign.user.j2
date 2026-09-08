@@ -1,0 +1,37 @@
+{#-
+  PASS 3 — user prompt, one render per paper.
+
+  The paper is described by its pass-1 labels rather than by its text, which is
+  what makes this pass cheap enough to re-run every time you edit the taxonomy.
+
+  Available here:
+    taxonomy   the areas, rendered with their definitions and subtopics
+    areas      just the names
+    paper      one pass-1 record; paper._display[field] is the same value
+               formatted for a prompt (lists joined, missing values as "n/a")
+    extra_fields, project
+-#}
+TAXONOMY
+
+{{ taxonomy }}
+
+PAPER
+
+Title: {{ paper._display.title }}
+One-line summary: {{ paper._display.one_line_summary }}
+Topic labels from a first reading: {{ paper._display.main_topic }}; {{ paper._display.subtopics }}
+Task: {{ paper._display.task }}
+Method: {{ paper._display.method_family }}
+Contribution type: {{ paper._display.contribution_type }}
+{% for field in extra_fields %}
+{{ field.name }}: {{ paper._display[field.name] }}
+{% endfor %}
+
+Assign this paper:
+
+- main_area: exactly one area name from the taxonomy.
+- secondary_area: a second area name, or "none" if the paper sits squarely in one.
+- subtopics: 2-4 subtopic labels. Prefer subtopics listed under the chosen area
+  in the taxonomy; only add a new one if nothing listed fits.
+- confidence: 0.0-1.0 that main_area is right.
+- why: one short sentence.

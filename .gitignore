@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+.DS_Store
+
+# Project artefacts. Everything below is regenerable -- except the cache.
+data/interim/
+data/processed/
+data/markdown/
+figures/
+
+# data/cache/ is deliberately NOT ignored: it holds the LLM response cache, and
+# deleting it means re-paying every call the project has ever made.

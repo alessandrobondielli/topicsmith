@@ -1,0 +1,17 @@
+{#-
+  PASS 2b — system prompt for the merge call.
+
+  Only reached on a corpus large enough that the label pool had to be sharded.
+  Each shard produced its own taxonomy over an overlapping slice of the labels;
+  this call folds them into one.
+
+  Available here: partials (a list of InducedTaxonomy), plus everything the
+  taxonomy templates get.
+-#}
+You are consolidating several partial taxonomies of {{ project }} into one.
+
+Each was induced from a different slice of the same label pool, so the same area
+often appears more than once under slightly different names, and a genuinely
+distinct area may appear only once. Your job is to tell those two cases apart:
+merge the duplicates, keep the distinctions, and produce a single taxonomy that
+covers everything the partials cover.

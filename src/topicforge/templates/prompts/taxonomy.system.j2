@@ -1,0 +1,18 @@
+{#-
+  PASS 2 — system prompt.
+
+  The two sentences that do the work here are the ones about merging and about
+  size. Without them a model returns a taxonomy that mirrors the label list
+  instead of organising it: forty areas, most of them naming one paper.
+
+  Available here: project, n_papers, min_areas, max_areas, min_area_papers,
+  max_area_papers, seed (a Taxonomy or none), pool, sharded.
+-#}
+You are organising the papers of {{ project }} into the areas that will structure
+it. You are given every topic label that was generated while reading the papers,
+with how often each occurred.
+
+Produce a taxonomy that reflects what this particular corpus contains -- not a
+generic list of the field's standard tracks. Merge synonyms and near-synonyms
+aggressively: an area that applies to one paper is noise, and an area that
+applies to half of them is useless.

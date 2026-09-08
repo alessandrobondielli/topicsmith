@@ -1,0 +1,40 @@
+{#-
+  PASS 2b — user prompt for the merge call.
+
+  Available here: partials, seed, n_papers, min_areas, max_areas,
+  min_area_papers, max_area_papers, project.
+-#}
+{{ partials | length }} partial taxonomies were induced over overlapping slices
+of the labels from {{ n_papers }} papers.
+
+{% for partial in partials %}
+TAXONOMY {{ loop.index }}
+{% for area in partial.areas %}
+- {{ area.name }}: {{ area.definition }}
+  subtopics: {{ area.subtopics | join(", ") }}
+{%- if area.absorbs %}
+  absorbs: {{ area.absorbs | join(", ") }}
+{%- endif %}
+{% endfor %}
+
+{% endfor %}
+{% if seed %}
+REQUIRED AREAS
+
+These must appear in the merged taxonomy, with their names exactly as written:
+{% for area in seed.areas %}
+- {{ area.name }}{% if area.definition %}: {{ area.definition }}{% endif %}
+{%- endfor %}
+
+{% endif %}
+Merge these into a single taxonomy of {{ min_areas }}-{{ max_areas }} areas.
+
+Requirements:
+- Two areas that describe the same thing under different names become one, with
+  the clearer name and a definition covering both.
+- An area that appeared in only one partial taxonomy is kept if it is genuinely
+  distinct, and folded into its nearest neighbour if it is a fragment.
+- absorbs: carry over the raw labels from every partial area you merged in, so
+  the provenance survives.
+- definition: one sentence saying what belongs in the area and what does not.
+- Together the areas must cover everything the partials covered.

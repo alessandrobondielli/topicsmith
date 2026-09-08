@@ -1,0 +1,34 @@
+# Seed taxonomy -- areas you already know you want.
+#
+# `topicforge taxonomy` keeps every area listed here, by name, and induces the
+# rest of the taxonomy around them. It may refine a definition if the labels
+# show the area covers more or less than you said; it may not rename or drop
+# one. Areas that came from here are marked `seeded: true` in the output.
+#
+# This is the difference between "induce categories, then edit them" and
+# genuinely semi-supervised: the categories you care about are in the frame from
+# the start, so everything else is induced *around* them rather than against
+# them.
+#
+# `definition` is worth writing carefully -- it is the text the model reads.
+# `subtopics` is optional; leave it out and the induction fills it in.
+#
+# An edited taxonomy.yaml from a previous run can be used as a seed file
+# unchanged, which is how you carry categories across editions of a conference.
+#
+# Delete this file if you do not want to seed anything.
+
+areas:
+  - name: Example Area One
+    definition: >-
+      One sentence saying what belongs in this area and, just as usefully, what
+      does not. Papers whose main contribution is X, but not those that merely
+      apply X to something else.
+
+  - name: Example Area Two
+    definition: >-
+      Another area you know your corpus contains and want counted separately,
+      whether or not the model would have induced it on its own.
+    subtopics:
+      - a finer label
+      - another finer label

@@ -1,0 +1,58 @@
+{#-
+  PASS 2 — user prompt.
+
+  Rendered once for the whole label pool, or once per shard on a corpus too
+  large to fit in one call (`sharded` is then true and the shard carries the
+  most frequent labels as shared context, so the partial taxonomies come back in
+  comparable terms).
+
+  Available here: main_topics, subtopics, methods (pre-rendered "- label (n)"
+  blocks), n_papers, min_areas, max_areas, min_area_papers, max_area_papers,
+  seed, sharded, project.
+-#}
+These labels were produced while reading the {{ n_papers }} papers of
+{{ project }}. Each line is a label and the number of papers it came from.
+{% if sharded %}
+
+This is one slice of a larger label pool, prefixed by the pool's most frequent
+labels so that your areas are drawn in the same terms as the other slices'.
+Cover this slice; do not worry about what is missing from it.
+{% endif %}
+
+MAIN TOPICS
+{{ main_topics }}
+
+SUBTOPICS
+{{ subtopics }}
+
+METHOD FAMILIES
+{{ methods }}
+{% if seed %}
+
+REQUIRED AREAS
+
+These areas must appear in your taxonomy. Keep each name exactly as written.
+Refine a definition if the labels show it should cover more or less than stated,
+and give each one subtopics drawn from the labels above. Then induce the
+remaining areas around them, covering everything these do not.
+{% for area in seed.areas %}
+
+- {{ area.name }}{% if area.definition %}: {{ area.definition }}{% endif %}
+{%- endfor %}
+{% endif %}
+
+Organise this into a canonical taxonomy of {{ min_areas }}-{{ max_areas }} main
+areas.
+
+Requirements:
+- Every area should plausibly cover between {{ min_area_papers }} and
+  {{ max_area_papers }} of the {{ n_papers }} papers. Nothing should be so broad
+  that it swallows the corpus, or so narrow that it names a single paper.
+- Give each area 2-8 subtopics drawn from, or generalising, the labels above.
+- Area names are 2-5 words, in your field's standard terminology, and read well
+  as a session title.
+- definition: one sentence saying what belongs in the area and what does not.
+- absorbs: the raw labels above that this area covers. This is how the mapping
+  is checked, so list them generously.
+- Together the areas must cover every label. Add a final catch-all area only if
+  genuinely necessary.

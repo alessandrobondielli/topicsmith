@@ -1,0 +1,106 @@
+# topicforge project configuration.
+#
+# Values of the form ${VAR} are substituted from the environment when this file
+# is read; ${VAR:default} supplies a fallback. Keep credentials in the
+# environment, not here.
+
+# Used in prompts and figure titles. Make it the name of the corpus as you would
+# say it out loud -- the model reads it.
+project: "my corpus"
+
+paths:
+  pdfs: "pdfs"                        # where your PDFs live (searched recursively)
+  markdown: "data/markdown"           # `ingest` writes here; point it at your own
+                                      # .md/.txt files to skip conversion entirely
+  data: "data"
+  figures: "figures"
+  prompts: "prompts"
+  metadata: "metadata.csv"            # optional; ignored if absent
+  seed_taxonomy: "seed_taxonomy.yaml" # optional; ignored if absent
+
+llm:
+  base_url: "${OPENAI_BASE_URL:http://localhost:8000/v1}"
+  api_key: "${OPENAI_API_KEY:dummy}"
+  model: "${TOPICFORGE_MODEL:}"
+  concurrency: 16
+  # Reasoning models loop under greedy decoding and the repetition then runs into
+  # max_tokens. DeepSeek-R1 and Qwen3-thinking both recommend ~0.6. Drop to 0.0
+  # if your model does not think -- but do it BEFORE the first real run:
+  # temperature is part of the cache key, so changing it later re-pays every call.
+  temperature: 0.6
+  # The taxonomy pass alone needs several thousand completion tokens for its
+  # JSON, and a reasoning model charges its thinking against the same budget.
+  max_tokens: 32768
+  timeout: 900
+  max_retries: 4
+
+excerpt:
+  # Words of paper text sent per call. Title + abstract + keywords +
+  # introduction + conclusions is about a quarter of a paper and deliberately
+  # excludes related work, which drags labels towards what a paper cites rather
+  # than what it does.
+  max_words: 3500
+  # Below this the section parse is treated as having failed and the whole paper
+  # is sent instead.
+  fallback_min_words: 150
+
+# Header patterns, by section kind. Anything you set here REPLACES the built-in
+# list for that kind; kinds you do not mention keep their defaults (English plus
+# a little Italian, Spanish and German). Set a kind to null to disable it.
+# Uncomment and edit if your papers do not look like English CS papers.
+# sections:
+#   introduction: ["^introduction", "^einleitung"]
+#   conclusion: ["^conclusion", "^fazit"]
+#   boilerplate: ["^©\\s*20\\d\\d", "^my venue 20\\d\\d:"]
+
+topics:
+  # --- pass 1
+  min_subtopics: 2
+  max_subtopics: 5
+  # Extra per-paper fields, added to the response schema and to the extraction
+  # prompt. type is one of: str, int, float, bool, list[str].
+  # Adding a field re-pays pass 1, because the schema is part of the cache key.
+  extra_fields: []
+  #   - name: languages
+  #     type: list[str]
+  #     description: >-
+  #       the natural languages the work concerns. Use ["multilingual"] when many
+  #       are covered and ["language-independent"] when none is at stake.
+
+  # --- pass 2
+  min_areas: 8
+  max_areas: 14
+  min_area_papers: 3          # an area covering fewer than this is too narrow
+  # max_area_papers defaults to a fifth of the corpus.
+  # max_area_papers: 25
+
+  # Label-pool budget, in tokens. Under it, the whole pool goes to the model in
+  # one call -- which is what you want, and what a corpus of a few hundred papers
+  # will always do. Over it, rare labels are dropped first (`coverage`), and only
+  # if that is not enough is the pool sharded and the partial taxonomies merged.
+  pool_budget_tokens: 12000
+  coverage: 0.95
+  shard_head_share: 0.25      # of each shard's labels, the shared frequent head
+
+  stability_runs: 3
+  stability_temperature: 0.7
+
+  # --- pass 3
+  assign_review_threshold: 0.7
+
+metadata:
+  # Only used when metadata.csv exists. Any columns are allowed; ids must match
+  # the PDF file stems.
+  id_column: "paper_id"
+  title_column: "title"
+  # Columns to cross-tabulate against the research areas, one heatmap each.
+  facets: []
+  #   - year
+  #   - venue
+
+viz:
+  # ink_ember · mediterranean · ultraviolet · forest · crimson · marigold ·
+  # slate · classic_blue
+  theme: "ink_ember"
+  scale: 1.0                  # multiplies every font size; 1.15 for a projector
+  cooccurrence_min_papers: 3  # raise it if the subtopic map is unreadable

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "topicforge"
+version = "0.1.0"
+description = "LLM-driven semi-supervised topic detection for research papers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["topic modeling", "llm", "bibliometrics", "research papers", "taxonomy"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "openai>=1.40",
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "jinja2>=3.1",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "networkx>=3.2",
+    "matplotlib>=3.8",
+    "wordcloud>=1.9",
+    "adjustText>=1.1",
+    "typer>=0.12",
+    "rich>=13.7",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+# PDF conversion. Needs a Java runtime; skip it if you already have markdown.
+pdf = ["opendataloader-pdf>=0.1"]
+# Only needed to run the notebook; the CLI works without them.
+notebooks = ["jupyter>=1.0", "ipykernel>=6.29", "nest_asyncio>=1.6"]
+
+[project.scripts]
+topicforge = "topicforge.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+topicforge = ["templates/*.yaml", "templates/*.ipynb", "templates/prompts/*.j2"]

@@ -1,0 +1,36 @@
+{#-
+  PASS 1 — user prompt, one render per paper.
+
+  Available here:
+    paper.title, paper.text, paper.paper_id, paper.strategy, paper.words
+    project, min_subtopics, max_subtopics
+    extra_fields  — the [{name, type, description}] declared in config.yaml
+
+  The field list below must stay in step with the response schema: the six core
+  fields are fixed in code, and anything you add belongs in topics.extra_fields
+  so that the schema and this prompt grow together.
+-#}
+Read this paper and describe what it is about.
+
+{{ paper.text }}
+
+---
+
+Report:
+
+- main_topic: the single research area this paper belongs to, 2-5 words.
+- subtopics: {{ min_subtopics }}-{{ max_subtopics }} more specific themes, each
+  1-4 words. Include the problem addressed, the method family used, and any
+  distinctive resource, material or phenomenon studied.
+- task: the problem the paper addresses, or "n/a" if it is a resource, survey or
+  position paper.
+- method_family: the dominant technical approach, named the way your field names
+  it rather than described in a sentence.
+- contribution_type: one of "resource", "model", "evaluation", "analysis",
+  "application", "position", "survey".
+- one_line_summary: a single sentence, at most 25 words, that could be read
+  aloud when introducing the paper.
+{% for field in extra_fields %}
+- {{ field.name }}: {{ field.description or "as described in config.yaml" }}
+{%- if field.type == "list[str]" %} Give a list.{% endif %}
+{% endfor %}
