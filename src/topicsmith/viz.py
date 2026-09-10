@@ -704,9 +704,10 @@ def heatmap(
     readable -- the table view the contrast rule asks for is the chart itself.
 
     ``normalise_rows`` shades each row against its own maximum instead of the
-    grid's. Use it when one column dwarfs the rest (an Italian conference
-    cross-tabbed by country): shading globally there paints every other cell the
-    same near-white and throws away the comparison the chart exists to make.
+    grid's. Use it when one column dwarfs the rest (for example a venue
+    cross-tabbed by author country, where the host country dominates): shading
+    globally there paints every other cell the same near-white and throws away
+    the comparison the chart exists to make.
     """
     values = np.asarray(matrix, dtype=float)
     if normalise_rows:
