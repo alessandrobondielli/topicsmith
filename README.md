@@ -15,7 +15,9 @@ can also hand the tool a **seed taxonomy** of areas you already know you want,
 and it will induce the rest around them.
 
 ```bash
-pip install topicforge
+# Not on PyPI yet (the name is taken by an unrelated project). Install from source:
+git clone https://github.com/alessandrobondielli/topicforge && cd topicforge
+pip install -e .          # add '.[pdf]' for PDF ingestion, '.[notebooks]' for the notebook
 
 topicforge init my-analysis && cd my-analysis
 # put your PDFs in ./pdfs, then edit config.yaml and prompts/extract.system.j2
@@ -128,7 +130,7 @@ Two other settings worth getting right before the first run:
 `topicforge ingest` converts PDFs to markdown with
 [opendataloader-pdf](https://pypi.org/project/opendataloader-pdf/), batching all
 of them into one call because each call spawns a JVM. Install it with
-`pip install 'topicforge[pdf]'`; it needs a Java runtime.
+`pip install -e '.[pdf]'`; it needs a Java runtime.
 
 Already have text? Point `paths.markdown` at any directory of `.md` or `.txt`
 files and skip `ingest` entirely. **A paper's id is its file stem**, and that is
@@ -245,6 +247,15 @@ topicforge cache          size of the on-disk response cache
 
 All of them take `--config PATH`; without it, the project root is found by
 walking up from the current directory.
+
+---
+
+## Status
+
+Extracted from the CLiC-it 2026 pipeline and repackaged as a standalone tool.
+The individual passes are lifted from a working analysis, but the packaged CLI
+has not yet been run end to end against a fresh corpus. Treat `0.1.0` as a
+first cut and expect rough edges.
 
 ---
 
