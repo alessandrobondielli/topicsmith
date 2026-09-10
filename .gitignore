@@ -8,6 +8,9 @@ dist/
 .ipynb_checkpoints/
 .DS_Store
 
+# Local working notes, not part of the repo.
+/handoff.md
+
 # Project artefacts. Everything below is regenerable -- except the cache.
 data/interim/
 data/processed/
