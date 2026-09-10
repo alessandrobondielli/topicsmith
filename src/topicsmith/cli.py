@@ -1,17 +1,17 @@
 """Command line entry point.
 
-    topicforge init [dir]     scaffold a project: config, prompts, notebook
-    topicforge ingest         PDFs -> markdown (opendataloader)
-    topicforge ping           check the endpoint and its structured-output mode
-    topicforge extract        pass 1: free-form labels, one call per paper
-    topicforge taxonomy       pass 2: induce the canonical areas
-    topicforge stability      how much the taxonomy moves between runs
-    topicforge assign         pass 3: classify every paper against the taxonomy
-    topicforge export         write data/processed + stats.json
-    topicforge figures        render the standard figure set
-    topicforge status         what has run, what is next
-    topicforge prompts        where each template is resolving from
-    topicforge cache          size of the on-disk response cache
+    topicsmith init [dir]     scaffold a project: config, prompts, notebook
+    topicsmith ingest         PDFs -> markdown (opendataloader)
+    topicsmith ping           check the endpoint and its structured-output mode
+    topicsmith extract        pass 1: free-form labels, one call per paper
+    topicsmith taxonomy       pass 2: induce the canonical areas
+    topicsmith stability      how much the taxonomy moves between runs
+    topicsmith assign         pass 3: classify every paper against the taxonomy
+    topicsmith export         write data/processed + stats.json
+    topicsmith figures        render the standard figure set
+    topicsmith status         what has run, what is next
+    topicsmith prompts        where each template is resolving from
+    topicsmith cache          size of the on-disk response cache
 
 The one manual step is between `taxonomy` and `assign`: read
 ``data/interim/taxonomy.yaml`` and edit it. That is the point of the tool, which
@@ -115,11 +115,11 @@ def init(
 
     console.print(f"\n[bold]{directory}[/bold] is ready. Next:")
     console.print("  1. put your PDFs in ./pdfs (or point paths.pdfs elsewhere)")
-    console.print("  2. set OPENAI_BASE_URL / OPENAI_API_KEY / TOPICFORGE_MODEL, "
+    console.print("  2. set OPENAI_BASE_URL / OPENAI_API_KEY / TOPICSMITH_MODEL, "
                   "or edit the llm block in config.yaml")
     console.print("  3. edit prompts/extract.system.j2 to name your field — it is "
                   "the single highest-leverage edit")
-    console.print("  4. topicforge ingest && topicforge ping && topicforge extract")
+    console.print("  4. topicsmith ingest && topicsmith ping && topicsmith extract")
 
 
 @app.command()

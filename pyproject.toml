@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "topicforge"
+name = "topicsmith"
 version = "0.1.0"
 description = "LLM-driven semi-supervised topic detection for research papers"
 readme = "README.md"
@@ -39,10 +39,10 @@ pdf = ["opendataloader-pdf>=0.1"]
 notebooks = ["jupyter>=1.0", "ipykernel>=6.29", "nest_asyncio>=1.6"]
 
 [project.scripts]
-topicforge = "topicforge.cli:app"
+topicsmith = "topicsmith.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-topicforge = ["templates/*.yaml", "templates/*.ipynb", "templates/prompts/*.j2"]
+topicsmith = ["templates/*.yaml", "templates/*.ipynb", "templates/prompts/*.j2"]

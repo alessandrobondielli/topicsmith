@@ -93,7 +93,7 @@ def read_raw(cfg: Config) -> pd.DataFrame:
     path = cfg.paths.raw_topics
     if not path.is_file():
         raise FileNotFoundError(
-            f"{path} not found. Run `topicforge extract` before this step."
+            f"{path} not found. Run `topicsmith extract` before this step."
         )
     lines = [ln for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
     if not lines:

@@ -7,7 +7,7 @@ of the corpus cannot drift away from the charts.
 
 The metadata sidecar is joined here rather than upstream, which means the
 markdown does not have to still exist to re-export, and adding a column to
-``metadata.csv`` costs one `topicforge export` and no LLM calls.
+``metadata.csv`` costs one `topicsmith export` and no LLM calls.
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ def read_assigned(cfg: Config) -> pd.DataFrame:
     path = cfg.paths.assigned
     if not path.is_file():
         raise FileNotFoundError(
-            f"{path} not found. Run `topicforge assign` before exporting."
+            f"{path} not found. Run `topicsmith assign` before exporting."
         )
     frame = pd.read_csv(path)
     frame["paper_id"] = frame["paper_id"].astype(str)
@@ -174,7 +174,7 @@ def load(cfg: Config | None = None) -> dict[str, pd.DataFrame]:
         path = cfg.paths.processed / f"{name}.csv"
         if not path.is_file():
             raise FileNotFoundError(
-                f"{path} not found. Run `topicforge export` first."
+                f"{path} not found. Run `topicsmith export` first."
             )
         frame = pd.read_csv(path)
         if "paper_id" in frame:

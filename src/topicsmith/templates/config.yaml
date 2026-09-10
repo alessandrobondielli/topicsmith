@@ -1,4 +1,4 @@
-# topicforge project configuration.
+# topicsmith project configuration.
 #
 # Values of the form ${VAR} are substituted from the environment when this file
 # is read; ${VAR:default} supplies a fallback. Keep credentials in the
@@ -21,7 +21,7 @@ paths:
 llm:
   base_url: "${OPENAI_BASE_URL:http://localhost:8000/v1}"
   api_key: "${OPENAI_API_KEY:dummy}"
-  model: "${TOPICFORGE_MODEL:}"
+  model: "${TOPICSMITH_MODEL:}"
   concurrency: 16
   # Reasoning models loop under greedy decoding and the repetition then runs into
   # max_tokens. DeepSeek-R1 and Qwen3-thinking both recommend ~0.6. Drop to 0.0

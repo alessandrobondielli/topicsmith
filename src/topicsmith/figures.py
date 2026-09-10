@@ -1,6 +1,6 @@
 """The standard figure set.
 
-Both `topicforge figures` and the notebook call these, so the two cannot drift:
+Both `topicsmith figures` and the notebook call these, so the two cannot drift:
 what you explore in Jupyter is what a Makefile renders on a server with no
 display attached.
 

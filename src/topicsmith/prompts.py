@@ -2,10 +2,10 @@
 
 Every prompt this tool sends is a Jinja template on disk, not a string in the
 source. That is deliberate: the prompts *are* the domain configuration. Adapting
-topicforge from NLP papers to clinical trials or to medieval history is a matter
+topicsmith from NLP papers to clinical trials or to medieval history is a matter
 of editing eight files, not of forking the package.
 
-``topicforge init`` copies the shipped defaults into the project's ``prompts/``
+``topicsmith init`` copies the shipped defaults into the project's ``prompts/``
 directory. Resolution is project-first with the shipped template as fallback, so
 deleting a file you did not want to customise restores the default rather than
 breaking the run.
@@ -54,7 +54,7 @@ class Prompts:
         except TemplateNotFound as exc:
             raise PromptError(
                 f"No template {name}.j2 in {self.cfg.paths.prompts} or in the shipped "
-                "defaults. Run `topicforge init --prompts-only` to restore them."
+                "defaults. Run `topicsmith init --prompts-only` to restore them."
             ) from exc
 
     def pair(self, pass_name: str, /, **context: Any) -> tuple[str, str]:
@@ -65,7 +65,7 @@ class Prompts:
         )
 
     def source(self, name: str) -> Path:
-        """Where a template actually resolved from -- for `topicforge prompts`."""
+        """Where a template actually resolved from -- for `topicsmith prompts`."""
         local = self.cfg.paths.prompts / f"{name}.j2"
         return local if local.is_file() else SHIPPED_PROMPTS / f"{name}.j2"
 

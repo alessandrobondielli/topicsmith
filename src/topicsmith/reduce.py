@@ -119,7 +119,7 @@ class Pool:
 
 @dataclass
 class Plan:
-    """What `topicforge taxonomy` is about to do, and why."""
+    """What `topicsmith taxonomy` is about to do, and why."""
 
     mode: str                       # "single" | "cutoff" | "shards"
     pools: list[Pool]               # one entry for single/cutoff, N for shards

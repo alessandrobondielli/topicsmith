@@ -1,6 +1,6 @@
 """Shared chart style, palette and primitives.
 
-Every figure topicforge draws is built from these, so the whole set reads as one
+Every figure topicsmith draws is built from these, so the whole set reads as one
 system.
 
 **Themes.** The palette is not hard-coded: :data:`THEMES` holds several complete,
@@ -355,8 +355,8 @@ def use_theme(theme: str | Theme = DEFAULT_THEME) -> Theme:
     ORDINAL = SEQUENTIAL[4:]
     NEUTRAL = list(theme.neutral or GRAPHITE)
     ACCENT, ACCENT_DARK = theme.accent, theme.accent_dark
-    SEQ_CMAP = LinearSegmentedColormap.from_list("topicforge_seq", SEQUENTIAL)
-    NEUTRAL_CMAP = LinearSegmentedColormap.from_list("topicforge_neutral", NEUTRAL)
+    SEQ_CMAP = LinearSegmentedColormap.from_list("topicsmith_seq", SEQUENTIAL)
+    NEUTRAL_CMAP = LinearSegmentedColormap.from_list("topicsmith_neutral", NEUTRAL)
     LAND, LAND_EDGE = theme.land, theme.land_edge
     # Back-compat aliases from when the pack was blue-only.
     BLUE, BLUE_DARK = ACCENT, ACCENT_DARK

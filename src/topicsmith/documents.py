@@ -63,9 +63,9 @@ def ingest(cfg: Config | None = None, *, force: bool = False,
     except ImportError as exc:
         raise IngestError(
             "opendataloader-pdf is not installed. Either\n"
-            "  pip install 'topicforge[pdf]'          (it needs a Java runtime)\n"
+            "  pip install 'topicsmith[pdf]'          (it needs a Java runtime)\n"
             "or convert the PDFs yourself and point paths.markdown at the result --\n"
-            "topicforge reads any directory of .md/.txt files named after the papers."
+            "topicsmith reads any directory of .md/.txt files named after the papers."
         ) from exc
 
     pdfs = find_pdfs(cfg)
@@ -133,7 +133,7 @@ def build_corpus(cfg: Config | None = None) -> pd.DataFrame:
     texts = find_texts(cfg)
     if not texts:
         raise IngestError(
-            f"No .md/.txt files in {cfg.paths.markdown}. Run `topicforge ingest` to "
+            f"No .md/.txt files in {cfg.paths.markdown}. Run `topicsmith ingest` to "
             "convert the PDFs, or point paths.markdown at text you already have."
         )
 

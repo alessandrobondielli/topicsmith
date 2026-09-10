@@ -1,9 +1,9 @@
 """Configuration loading.
 
-Everything topicforge needs to know -- where the papers are, which endpoint to
+Everything topicsmith needs to know -- where the papers are, which endpoint to
 talk to, how to slice a paper into sections, how large a taxonomy to induce --
 lives in ``config.yaml`` at the root of a *project directory*, the one created
-by ``topicforge init``.
+by ``topicsmith init``.
 
 Strings of the form ``${VAR}`` or ``${VAR:default}`` are expanded from the
 environment when the file is read, so an API key never has to sit in a file that
@@ -51,13 +51,13 @@ def find_project_root(start: Path | None = None) -> Path:
             return candidate
     raise ConfigError(
         f"No {CONFIG_NAME} found in {here} or any parent directory.\n"
-        "Run `topicforge init <dir>` to create a project, then run commands from "
+        "Run `topicsmith init <dir>` to create a project, then run commands from "
         "inside it (or pass --config <path>)."
     )
 
 
 class Paths:
-    """Resolved absolute paths for every directory topicforge touches."""
+    """Resolved absolute paths for every directory topicsmith touches."""
 
     def __init__(self, root: Path, spec: dict[str, Any]):
         self.root = root
@@ -74,16 +74,16 @@ class Paths:
         self.metadata = under("metadata", "metadata.csv")
         self.seed_taxonomy = under("seed_taxonomy", "seed_taxonomy.yaml")
 
-        # TOPICFORGE_DATA_DIR redirects every derived artefact -- cache, interim
+        # TOPICSMITH_DATA_DIR redirects every derived artefact -- cache, interim
         # tables, exports -- without touching the source documents. Useful for
         # keeping two runs side by side, and for exercising the pipeline against a
         # throwaway backend without poisoning the real response cache.
-        self.data = Path(os.environ.get("TOPICFORGE_DATA_DIR") or under("data", "data"))
+        self.data = Path(os.environ.get("TOPICSMITH_DATA_DIR") or under("data", "data"))
         self.cache = self.data / "cache"
         self.llm_cache = self.cache / "llm_cache"
         self.interim = self.data / "interim"
         self.processed = self.data / "processed"
-        self.figures = Path(os.environ.get("TOPICFORGE_FIGURES_DIR") or under("figures", "figures"))
+        self.figures = Path(os.environ.get("TOPICSMITH_FIGURES_DIR") or under("figures", "figures"))
 
     # Named artefacts, so nothing downstream has to spell a filename twice.
     @property

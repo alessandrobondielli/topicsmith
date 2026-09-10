@@ -1,6 +1,6 @@
 # Seed taxonomy -- areas you already know you want.
 #
-# `topicforge taxonomy` keeps every area listed here, by name, and induces the
+# `topicsmith taxonomy` keeps every area listed here, by name, and induces the
 # rest of the taxonomy around them. It may refine a definition if the labels
 # show the area covers more or less than you said; it may not rename or drop
 # one. Areas that came from here are marked `seeded: true` in the output.

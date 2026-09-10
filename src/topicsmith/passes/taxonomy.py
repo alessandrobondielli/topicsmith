@@ -16,7 +16,7 @@ A **seed taxonomy** goes in the other direction: areas you already know you want
 are handed to the induction, which must keep them and induce the rest around
 them.
 
-Large corpora take the sharded path described in :mod:`topicforge.reduce`; the
+Large corpora take the sharded path described in :mod:`topicsmith.reduce`; the
 merge call folds the partial taxonomies into one.
 """
 
@@ -168,9 +168,9 @@ def stability(
 HEADER = """\
 # Canonical topic taxonomy for {project}.
 #
-# Induced by `topicforge taxonomy`. EDIT THIS FILE FREELY -- rename areas, merge
+# Induced by `topicsmith taxonomy`. EDIT THIS FILE FREELY -- rename areas, merge
 # two into one, rewrite a definition, delete an area you do not believe in.
-# `topicforge assign` reads whatever is here, and this file is part of no cache
+# `topicsmith assign` reads whatever is here, and this file is part of no cache
 # key, so an edit costs one re-run of the assignment pass and nothing else.
 #
 # name       the label that appears on every chart and in every export
@@ -194,6 +194,6 @@ def load(cfg: Config) -> Taxonomy:
     path = cfg.paths.taxonomy
     if not path.is_file():
         raise FileNotFoundError(
-            f"{path} not found. Run `topicforge taxonomy` before assigning."
+            f"{path} not found. Run `topicsmith taxonomy` before assigning."
         )
     return Taxonomy.model_validate(yaml.safe_load(path.read_text(encoding="utf-8")))

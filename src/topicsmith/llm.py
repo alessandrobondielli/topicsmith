@@ -168,7 +168,7 @@ class LLMClient:
         settings = self.cfg.llm
         if not settings.get("model"):
             raise LLMError(
-                "No model configured. Set TOPICFORGE_MODEL (and OPENAI_BASE_URL) in "
+                "No model configured. Set TOPICSMITH_MODEL (and OPENAI_BASE_URL) in "
                 "the environment, or fill in llm.model in config.yaml."
             )
         self.model: str = settings["model"]

@@ -1,4 +1,4 @@
-# topicforge
+# topicsmith
 
 **Semi-supervised topic detection for research papers, using an LLM you control.**
 
@@ -16,18 +16,18 @@ and it will induce the rest around them.
 
 ```bash
 # Not on PyPI yet (the name is taken by an unrelated project). Install from source:
-git clone https://github.com/alessandrobondielli/topicforge && cd topicforge
+git clone https://github.com/alessandrobondielli/topicsmith && cd topicsmith
 pip install -e .          # add '.[pdf]' for PDF ingestion, '.[notebooks]' for the notebook
 
-topicforge init my-analysis && cd my-analysis
+topicsmith init my-analysis && cd my-analysis
 # put your PDFs in ./pdfs, then edit config.yaml and prompts/extract.system.j2
 
-topicforge ingest       # PDFs -> markdown
-topicforge extract      # pass 1: free-form labels, one call per paper
-topicforge taxonomy     # pass 2: induce the canonical areas
+topicsmith ingest       # PDFs -> markdown
+topicsmith extract      # pass 1: free-form labels, one call per paper
+topicsmith taxonomy     # pass 2: induce the canonical areas
 $EDITOR data/interim/taxonomy.yaml        # <- the point of the tool
-topicforge assign       # pass 3: classify every paper against your taxonomy
-topicforge export && topicforge figures
+topicsmith assign       # pass 3: classify every paper against your taxonomy
+topicsmith export && topicsmith figures
 ```
 
 ---
@@ -94,7 +94,7 @@ deleting it means paying for the whole corpus again.
 
 ### The endpoint
 
-Any OpenAI-compatible server. topicforge probes once for how it constrains
+Any OpenAI-compatible server. topicsmith probes once for how it constrains
 structured output and reuses whichever works:
 
 1. `response_format: {type: json_schema}` — preferred;
@@ -105,15 +105,15 @@ structured output and reuses whichever works:
 ```bash
 export OPENAI_BASE_URL=http://localhost:8000/v1
 export OPENAI_API_KEY=...        # "dummy" for a local server
-export TOPICFORGE_MODEL=Qwen/Qwen3-32B
-topicforge ping                  # says which mode it negotiated
+export TOPICSMITH_MODEL=Qwen/Qwen3-32B
+topicsmith ping                  # says which mode it negotiated
 ```
 
 **If your model reasons**, start vLLM with a matching `--reasoning-parser`
 (`deepseek_r1`, `qwen3`, …). Without one, the whole `<think>` block arrives
 inside `message.content`, and a model reasoning *about a JSON schema* writes
 braces while it thinks — so JSON extraction fails on some papers and not others.
-topicforge strips think blocks anyway, but the parser is the right fix.
+topicsmith strips think blocks anyway, but the parser is the right fix.
 
 Two other settings worth getting right before the first run:
 
@@ -127,7 +127,7 @@ Two other settings worth getting right before the first run:
 
 ### The papers
 
-`topicforge ingest` converts PDFs to markdown with
+`topicsmith ingest` converts PDFs to markdown with
 [opendataloader-pdf](https://pypi.org/project/opendataloader-pdf/), batching all
 of them into one call because each call spawns a JVM. Install it with
 `pip install -e '.[pdf]'`; it needs a Java runtime.
@@ -158,8 +158,8 @@ which is how you carry categories across editions of a conference.
 ## Making it yours
 
 **The prompts are the configuration.** All eight templates live in your project's
-`prompts/` directory and are ordinary Jinja files. `topicforge init` puts them
-there; `topicforge prompts` shows which file each pass is resolving from; delete
+`prompts/` directory and are ordinary Jinja files. `topicsmith init` puts them
+there; `topicsmith prompts` shows which file each pass is resolving from; delete
 one and the shipped default takes over again.
 
 The single highest-leverage edit is `prompts/extract.system.j2`. The shipped
@@ -190,7 +190,7 @@ After that, `config.yaml`:
 ## Larger corpora
 
 Pass 2 shows the model every label at once, which is the right shape for the
-problem and does not scale forever. topicforge sizes the pool against
+problem and does not scale forever. topicsmith sizes the pool against
 `topics.pool_budget_tokens` and picks one of three regimes, telling you which:
 
 | | |
@@ -199,7 +199,7 @@ problem and does not scale forever. topicforge sizes the pool against
 | **cutoff** | Over budget: keep the most frequent labels covering `topics.coverage` (default 95%) of occurrences and drop the singleton tail. A label seen once cannot define an area anyway. |
 | **shards** | Still over budget: split into frequency-stratified batches, induce a partial taxonomy per batch, and merge them in one final call. Every batch carries the head of the distribution as shared context, so the partials come back in comparable terms. |
 
-`topicforge taxonomy --dry-run` reports the plan without spending anything.
+`topicsmith taxonomy --dry-run` reports the plan without spending anything.
 
 ---
 
@@ -207,7 +207,7 @@ problem and does not scale forever. topicforge sizes the pool against
 
 Three things are built in, and all three are worth using.
 
-**`topicforge stability`** re-induces the taxonomy several times at a non-zero
+**`topicsmith stability`** re-induces the taxonomy several times at a non-zero
 temperature and reports how much the areas move. High overlap means the
 categories are a property of your corpus rather than of one sampling run. It is
 the answer to the first question anyone asks about LLM-derived categories.
@@ -229,20 +229,20 @@ model answers off-taxonomy, validation fails and the call is retried.
 ## Commands
 
 ```
-topicforge init [dir]     scaffold a project: config, prompts, notebook
-topicforge ingest         PDFs -> markdown
-topicforge ping           check the endpoint and its structured-output mode
-topicforge status         what has run, what is next
-topicforge extract        pass 1
-topicforge taxonomy       pass 2   (--seed FILE, --dry-run)
-topicforge stability      how much the taxonomy moves between runs
-topicforge assign         pass 3
-topicforge run            all three, back to back (skips your editing step)
-topicforge export         write data/processed + stats.json
-topicforge figures        render the standard figure set
-topicforge stats          print the headline numbers
-topicforge prompts        where each template is resolving from
-topicforge cache          size of the on-disk response cache
+topicsmith init [dir]     scaffold a project: config, prompts, notebook
+topicsmith ingest         PDFs -> markdown
+topicsmith ping           check the endpoint and its structured-output mode
+topicsmith status         what has run, what is next
+topicsmith extract        pass 1
+topicsmith taxonomy       pass 2   (--seed FILE, --dry-run)
+topicsmith stability      how much the taxonomy moves between runs
+topicsmith assign         pass 3
+topicsmith run            all three, back to back (skips your editing step)
+topicsmith export         write data/processed + stats.json
+topicsmith figures        render the standard figure set
+topicsmith stats          print the headline numbers
+topicsmith prompts        where each template is resolving from
+topicsmith cache          size of the on-disk response cache
 ```
 
 All of them take `--config PATH`; without it, the project root is found by
@@ -261,7 +261,7 @@ first cut and expect rough edges.
 
 ## Origin
 
-topicforge is the topic-detection half of the analytics pipeline built for
+topicsmith is the topic-detection half of the analytics pipeline built for
 **CLiC-it 2026** (the Italian Conference on Computational Linguistics), where it
 replaced a BERTopic-based approach over 119 accepted papers. The
 conference-specific half — authors, affiliations, geography, co-authorship — is
