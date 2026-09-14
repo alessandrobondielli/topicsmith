@@ -93,7 +93,7 @@ how the server constrains structured output and reuses whichever method works:
 3. schema described in the prompt — fallback; answers are still validated, but
    expect more retries
 
-Configure it with environment variables or the `llm` block in `config.yaml`:
+Configure it with environment variables or the `llm` block in `config.yaml`, for example:
 
 ```bash
 export OPENAI_BASE_URL=http://localhost:8000/v1
